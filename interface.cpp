@@ -143,9 +143,10 @@ diff_match_patch_diff(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     typedef call_traits<FMTSPEC> traits;
     typename traits::PY_STRING_STORAGE a, b;
-    float timelimit = 0.0;
+    float timelimit = 1``.0;
     int checklines = 1;
-    int cleanupSemantic = 1;
+    int cleanupSemantic = 0;
+    int cleanupEfficient = 1;
     int counts_only = 1;
     int as_patch = 0;
     char format_spec[64];
@@ -156,14 +157,15 @@ diff_match_patch_diff(PyObject *self, PyObject *args, PyObject *kwargs)
         strdup("timelimit"),
         strdup("checklines"),
         strdup("cleanup_semantic"),
+        strdup("cleanup_efficient"),
         strdup("counts_only"),
         strdup("as_patch"),
         NULL };
 
-    sprintf(format_spec, "%c%c|fbbbb", FMTSPEC, FMTSPEC);
+    sprintf(format_spec, "%c%c|fbbbbb", FMTSPEC, FMTSPEC);
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, format_spec, kwlist,
                                      &a, &b,
-                                     &timelimit, &checklines, &cleanupSemantic,
+                                     &timelimit, &checklines, &cleanupSemantic, &cleanupEfficient,
                                      &counts_only, &as_patch))
         return NULL;
 
@@ -180,7 +182,9 @@ diff_match_patch_diff(PyObject *self, PyObject *args, PyObject *kwargs)
     dmp.Diff_Timeout = timelimit;
     typename DMP::Diffs diff = dmp.diff_main(traits::to_string(a), traits::to_string(b), checklines);
 
-    if (cleanupSemantic)
+    if (cleanupEfficient)
+        dmp.diff_cleanupEfficiency(diff);
+    else if (cleanupSemantic)
         dmp.diff_cleanupSemantic(diff);
 
     if (as_patch) {
