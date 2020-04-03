@@ -143,7 +143,7 @@ diff_match_patch_diff(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     typedef call_traits<FMTSPEC> traits;
     typename traits::PY_STRING_STORAGE a, b;
-    float timelimit = 1``.0;
+    float timelimit = 1.0;
     int checklines = 1;
     int cleanupSemantic = 0;
     int cleanupEfficient = 1;
