@@ -175,9 +175,9 @@ diff_match_patch_diff(PyObject *self, PyObject *args, PyObject *kwargs)
     DMP dmp;
 
     PyObject *opcodes[3];
-    opcodes[dmp.DELETE] = PyString_FromString("-");
-    opcodes[dmp.INSERT] = PyString_FromString("+");
-    opcodes[dmp.EQUAL] = PyString_FromString("=");
+    opcodes[dmp.DELETE] = PyString_FromString("-1");
+    opcodes[dmp.INSERT] = PyString_FromString("1");
+    opcodes[dmp.EQUAL] = PyString_FromString("0");
 
     dmp.Diff_Timeout = timelimit;
     typename DMP::Diffs diff = dmp.diff_main(traits::to_string(a), traits::to_string(b), checklines);
